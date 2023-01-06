@@ -16,7 +16,7 @@ mongoose
   })
   .then(() => console.log("DB conected successfull"))
   .catch((err) => console.log("DB conection error: ", err));
-app.use("/images",express.static("images"));
+app.use("/app/api/images",express.static("images"));
 app.use("/app/api", userRoute);
 app.use("/app/api", postRoute);
 app.get("/app/apii", async(req,res)=>{
