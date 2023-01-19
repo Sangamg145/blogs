@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const jwt = require('jsonwebtoken')
 const Post = require("../models/post");
 const { upload } = require("./upload");
 const { verifyToken } = require("./verifyToken");
@@ -8,12 +9,25 @@ router.post(
   verifyToken,
   upload.single("image"),
   async (req, res) => {
+    let post_id=""
+    const authHeader=req.headers.token
+    if (authHeader) {
+        const token = authHeader.split(" ")[1]
+        jwt.verify(token,process.env.JWT_KEY,(err,user)=>{
+            console.log('object',user.id);
+            if (err) res.status(403).json("You are not authenticated!")
+            post_id=user.id
+        })
+    } else {
+       return res.status(401).json("You are not authenticated!")
+    }
     try {
       const newUser = new Post({
         title: req.body.title,
         category: req.body.category,
         post: req.body.post,
         image: req.file ? req.file.filename : null,
+        post_id:post_id
       });
       const saveUser = await newUser.save();
       res.status(201).json({"success":"true","status_code":200,"message":"Ok",data:saveUser});
@@ -56,7 +70,7 @@ router.delete(
   }
 );
 
-router.get("/post", verifyToken, async (req, res) => {
+router.get("/post", async (req, res) => {
   try {
     const post = await  Post.find({category:req.query.cat});
     const post1 = await  Post.find();
