@@ -4,6 +4,7 @@ let postSchema = new mongoose.Schema({
     post:{type:String,required:true},
     category:{type:String},
     image:{type:String},
+    post_id:{type:String},
 },
 {timestamps:true},
 { collection : 'post',versionKey: false })
