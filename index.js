@@ -4,6 +4,7 @@ const cors = require("cors")
 const mongoose = require("mongoose");
 const userRoute = require("./routes/user");
 const postRoute = require("./routes/post");
+const contactUs = require("./routes/contactUs");
 const app = express();
 app.use(express.json());
 app.use(cors())
@@ -19,6 +20,7 @@ mongoose
 app.use("/app/api/images",express.static("images"));
 app.use("/app/api", userRoute);
 app.use("/app/api", postRoute);
+app.use("/app/api", contactUs);
 app.get("/app/apii", async(req,res)=>{
   res.status(200).json({name:"user",count:77})
 });
