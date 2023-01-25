@@ -33,14 +33,16 @@ let mailDetails = {
 	from: 'datandler1@gmail.com',
 	to: req.body.email,
 	subject: 'Datandler Software',
-	text: req.body.message
+	text: req.body.message,
 };
 
 mailTransporter.sendMail(mailDetails, function(err, data) {
 	if(err) {
-		console.log('Error Occurs',err);
+		res.status(500).json(err);
+        console.log('error',err);
 	} else {
 		console.log('Email sent successfully');
+        res.status(200).json(data)
 	}
 });
 
